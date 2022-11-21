@@ -3,9 +3,6 @@ from load_css import local_css
 import pandas as pd
 
 local_css("style.css")
-
-#wb_origin = openpyxl.load_workbook('A1_二次標註_網路危機訊息標註_1100927_second_labeled.xlsx', data_only=1)
-#wb_labeled = openpyxl.load_workbook('網路危機_A1_電腦斷句_討論標註_全_修正完成.xlsx', data_only=1)
 excel_data_df1 = pd.read_excel('A1_二次標註_網路危機訊息標註_1100927_second_labeled.xlsx', sheet_name='contents')
 excel_data_df2 = pd.read_excel('網路危機_A1_電腦斷句_討論標註_全_修正完成.xlsx', sheet_name='Merged')
 excel_data_df3 = pd.read_excel('網路危機_A1_危機程度.xlsx', sheet_name='資料統整(編號)')
@@ -14,12 +11,10 @@ Titles = excel_data_df1['Title'][:].tolist()
 TextIDs = excel_data_df1['TextID'][:].tolist()
 TextTimes = excel_data_df1['TextTime'][:].tolist()
 Authors = excel_data_df1['Author'][:].tolist()
-
 Level = excel_data_df3['Crisis_Level'][:].tolist()
 
 
 original_contents = excel_data_df1['Content(remove_tag)'][:].tolist()
-
 
 sentences = excel_data_df2['Sentence'][:].tolist()
 labels = excel_data_df2['標註代碼'][:].tolist()
@@ -27,20 +22,6 @@ labels = excel_data_df2['標註代碼'][:].tolist()
 
 # article = st.selectbox('Choose an article', Titles)
 key_i = int(excel_data_df3["index"][0])
-article = Titles[key_i]
-
-global_stastic = [0]*7
-
-to_show = 0
-category = ""
-if Level[key_i] == 3:
-    category = "A (危機程度高：有刺傷自殺行為)"
-elif Level[key_i] == 2:
-    category = "B (危機程度中：有自傷自殺意念)"
-elif Level[key_i] == 1:
-    category = "C (危機程度低：有憂鬱負向情緒)"
-else:
-    category = "0 (無危機狀況)"
 
 
 title_col1, title_col2, title_col3 = st.columns([18,2,2])
@@ -66,7 +47,27 @@ with title_col3:
         article = Titles[key_i]
         button = False
 
+article = Titles[key_i]
+level_index = excel_data_df3["Title"].to_list().index(article)
 
+to_show = 0
+category = ""
+if Level[level_index] == 3:
+    category = "A (危機程度高：有自傷自殺行為)"
+elif Level[level_index] == 2:
+    category = "B (危機程度中：有自傷自殺意念)"
+elif Level[level_index] == 1:
+    category = "C (危機程度低：有憂鬱負向情緒)"
+else:
+    category = "0 (無危機狀況)"
+
+
+
+excel_data_df3["index"][0] = key_i
+
+excel_data_df3.to_excel('網路危機_A1_危機程度.xlsx', sheet_name='資料統整(編號)')
+
+# print(key_i, level_index)
 
 with st.sidebar:
     title = "文章標題: " + Titles[key_i]
@@ -183,6 +184,3 @@ with col2:
     container5.caption(s5, unsafe_allow_html=1)
     container6.caption(s6, unsafe_allow_html=1)
 
-excel_data_df3["index"][0] = key_i
-
-excel_data_df3.to_excel('網路危機_A1_危機程度.xlsx', sheet_name='資料統整(編號)')

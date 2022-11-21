@@ -25,8 +25,6 @@ sentences = excel_data_df2['Sentence'][:].tolist()
 labels = excel_data_df2['標註代碼'][:].tolist()
 
 
-st.title("網路危機訊息偵測系統")
-
 # article = st.selectbox('Choose an article', Titles)
 key_i = int(excel_data_df3["index"][0])
 article = Titles[key_i]
@@ -36,13 +34,38 @@ global_stastic = [0]*7
 to_show = 0
 category = ""
 if Level[key_i] == 3:
-    category = "A(自殺與憂鬱)"
+    category = "A (危機程度高：有刺傷自殺行為)"
 elif Level[key_i] == 2:
-    category = "B(負向文字)"
+    category = "B (危機程度中：有自傷自殺意念)"
 elif Level[key_i] == 1:
-    category = "C(生理反應)"
+    category = "C (危機程度低：有憂鬱負向情緒)"
 else:
-    category = "D(中性句)"
+    category = "0 (無危機狀況)"
+
+
+title_col1, title_col2, title_col3 = st.columns([18,2,2])
+
+with title_col1:
+    st.title("網路危機訊息偵測系統")
+
+with title_col2:
+    st.markdown("\n")    
+    st.markdown("\n")
+    button_previous = st.button("上一篇")
+    if(button_previous):
+        if key_i > 0:
+            key_i -= 1
+            article = Titles[key_i]
+            button = False
+with title_col3:
+    st.markdown("\n")    
+    st.markdown("\n")
+    button_next = st.button("下一篇")
+    if(button_next):
+        key_i += 1
+        article = Titles[key_i]
+        button = False
+
 
 
 with st.sidebar:
@@ -77,7 +100,7 @@ with st.sidebar:
             for j in range(3):
                 st.markdown("\n")         
 
-col2, col1 = st.columns([30, 40])
+col2, col1 = st.columns([30, 30])
 with col1:
     st.header("原始網路文章")
     st.markdown(original_contents[key_i])
@@ -159,21 +182,6 @@ with col2:
     container4.caption(s4, unsafe_allow_html=1)
     container5.caption(s5, unsafe_allow_html=1)
     container6.caption(s6, unsafe_allow_html=1)
-button_col1, button_col2 , col_empty= st.columns([1,1,8])
-
-with button_col1:
-    button_previous = st.button("上一篇")
-    if(button_previous):
-        if key_i > 0:
-            key_i -= 1
-            article = Titles[key_i]
-            button = False
-with button_col2:
-    button_next = st.button("下一篇")
-    if(button_next):
-        key_i += 1
-        article = Titles[key_i]
-        button = False
 
 excel_data_df3["index"][0] = key_i
 

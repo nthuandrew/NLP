@@ -20,7 +20,7 @@ sentences = excel_data_df2['Sentence'][:].tolist()
 labels = excel_data_df2['標註代碼'][:].tolist()
 
 
-# article = st.selectbox('Choose an article', Titles)
+article = st.selectbox('Choose an article', Titles)
 key_i = int(excel_data_df3["index"][0])
 
 

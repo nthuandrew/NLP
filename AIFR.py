@@ -27,7 +27,7 @@ key_i = int(excel_data_df3["index"][0])
 title_col1, title_col2, title_col3 = st.columns([18,2,2])
 
 with title_col1:
-    st.title("網路危機訊息偵測系統")
+    st.title("網路危機文章偵測系統")
 
 with title_col2:
     st.markdown("\n")    
